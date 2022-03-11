@@ -1,4 +1,4 @@
-package me.itanik.todo
+package me.itanik.todo.presentation
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -9,6 +9,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import me.itanik.todo.R
 import me.itanik.todo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
