@@ -1,4 +1,4 @@
-package me.itanik.todo.presentation
+package me.itanik.todo.presentation.main
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import me.itanik.todo.R
 import me.itanik.todo.databinding.ActivityMainBinding
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,7 +22,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
