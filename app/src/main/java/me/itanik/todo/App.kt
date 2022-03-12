@@ -1,8 +1,8 @@
-package me.itanik.todo.presentation
+package me.itanik.todo
 
 import android.app.Application
-import me.itanik.todo.presentation.di.AppComponent
-import me.itanik.todo.presentation.di.DaggerAppComponent
+import me.itanik.todo.di.AppComponent
+import me.itanik.todo.di.DaggerAppComponent
 import timber.log.Timber
 
 class App : Application() {

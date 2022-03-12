@@ -1,4 +1,4 @@
-package me.itanik.todo.presentation.di.modules
+package me.itanik.todo.di.modules
 
 import dagger.Module
 
