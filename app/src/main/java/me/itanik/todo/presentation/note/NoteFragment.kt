@@ -27,7 +27,7 @@ class NoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonSecond.setOnClickListener {
+        binding.saveNoteBtn.setOnClickListener {
             findNavController().popBackStack()
         }
     }
