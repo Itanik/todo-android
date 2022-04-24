@@ -5,13 +5,18 @@ import me.itanik.todo.di.AppComponent
 import me.itanik.todo.di.DaggerAppComponent
 import timber.log.Timber
 
-class App : Application() {
+class App : Application(), AppComponentHolder {
 
-    private lateinit var injector: AppComponent
+    override val appComponent: AppComponent by lazy {
+        DaggerAppComponent.factory().create(applicationContext)
+    }
 
     override fun onCreate() {
         Timber.plant(Timber.DebugTree())
-        injector = DaggerAppComponent.factory().create(applicationContext)
         super.onCreate()
     }
+}
+
+interface AppComponentHolder {
+    val appComponent: AppComponent
 }
