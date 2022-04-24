@@ -6,23 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import me.itanik.todo.databinding.FragmentSecondBinding
+import me.itanik.todo.databinding.FragmentNoteBinding
 import me.itanik.todo.presentation.note.dialogs.DatePickerDialog
 import me.itanik.todo.presentation.note.dialogs.TimePickerDialog
 
 /**
- * A simple [Fragment] subclass as the second destination in the navigation.
+ * A fragment for note creation/modification.
  */
 class NoteFragment : Fragment() {
 
-    private var _binding: FragmentSecondBinding? = null
+    private var _binding: FragmentNoteBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        _binding = FragmentNoteBinding.inflate(inflater, container, false)
         return binding.root
     }
 

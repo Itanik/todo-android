@@ -7,21 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import me.itanik.todo.R
-import me.itanik.todo.databinding.FragmentFirstBinding
+import me.itanik.todo.databinding.FragmentNotesListBinding
 
 /**
- * A simple [Fragment] subclass as the default destination in the navigation.
+ * A fragment that contains list of td notes
  */
-class ListFragment : Fragment() {
+class NotesListFragment : Fragment() {
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentNotesListBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentNotesListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -29,7 +29,7 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.addNewNoteBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            findNavController().navigate(R.id.action_NotesListFragment_to_NoteFragment)
         }
     }
 
