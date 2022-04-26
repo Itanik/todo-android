@@ -9,10 +9,14 @@ import java.util.*
     tableName = "notes"
 )
 data class NoteEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = false)
+    val id: UUID,
     val title: String,
     val details: String = "",
-    @ColumnInfo(name = "creation_date")val creationDate: Date,
-    @ColumnInfo(name = "edit_date")val editDate: Date? = null,
-    @ColumnInfo(name = "estimation_date")val estimationDate: Date? = null,
+    @ColumnInfo(name = "creation_date")
+    val creationDate: Date,
+    @ColumnInfo(name = "edit_date")
+    val editDate: Date? = null,
+    @ColumnInfo(name = "estimation_date")
+    val estimationDate: Date? = null,
 )
