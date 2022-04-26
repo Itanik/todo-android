@@ -6,6 +6,7 @@ import androidx.room.TypeConverters
 import me.itanik.todo.data.local.db.dao.NoteDao
 import me.itanik.todo.data.local.db.entity.NoteEntity
 
+const val DB_NAME = "notes_db"
 const val VERSION = 1
 
 @Database(
@@ -13,8 +14,9 @@ const val VERSION = 1
         NoteEntity::class,
     ],
     version = VERSION,
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
-abstract class AppDataBase : RoomDatabase() {
+abstract class NotesDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
 }
