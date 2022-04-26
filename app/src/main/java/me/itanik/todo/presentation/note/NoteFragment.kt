@@ -1,20 +1,21 @@
 package me.itanik.todo.presentation.note
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import me.itanik.todo.databinding.FragmentNoteBinding
+import me.itanik.todo.presentation.base.BaseFragment
 import me.itanik.todo.presentation.note.dialogs.DatePickerDialog
 import me.itanik.todo.presentation.note.dialogs.TimePickerDialog
 
 /**
  * A fragment for note creation/modification.
  */
-class NoteFragment : Fragment() {
+class NoteFragment : BaseFragment() {
 
+    private val viewModel by viewModel(NoteViewModel::class.java) { noteViewModelFactory() }
     private var _binding: FragmentNoteBinding? = null
     private val binding get() = _binding!!
 
