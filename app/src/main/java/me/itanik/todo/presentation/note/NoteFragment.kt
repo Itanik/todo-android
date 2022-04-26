@@ -3,7 +3,6 @@ package me.itanik.todo.presentation.note
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import me.itanik.todo.databinding.FragmentNoteBinding
 import me.itanik.todo.presentation.base.BaseFragment
@@ -13,19 +12,11 @@ import me.itanik.todo.presentation.note.dialogs.TimePickerDialog
 /**
  * A fragment for note creation/modification.
  */
-class NoteFragment : BaseFragment() {
+class NoteFragment : BaseFragment<FragmentNoteBinding>() {
 
     private val viewModel by viewModel(NoteViewModel::class.java) { noteViewModelFactory() }
-    private var _binding: FragmentNoteBinding? = null
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentNoteBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    override val bindingInflater: (LayoutInflater) -> FragmentNoteBinding
+        get() = FragmentNoteBinding::inflate
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,10 +40,5 @@ class NoteFragment : BaseFragment() {
 
     private fun showTimePickerDialog() {
         TimePickerDialog().show(parentFragmentManager, "timePicker")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

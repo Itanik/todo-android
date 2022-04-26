@@ -13,19 +13,11 @@ import me.itanik.todo.presentation.base.BaseFragment
 /**
  * A fragment that contains list of td notes
  */
-class NotesListFragment : BaseFragment() {
+class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
 
     private val viewModel by viewModel(NoteListViewModel::class.java) { noteListViewModelFactory() }
-    private var _binding: FragmentNotesListBinding? = null
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentNotesListBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    override val bindingInflater: (LayoutInflater) -> FragmentNotesListBinding
+        get() = FragmentNotesListBinding::inflate
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,10 +25,5 @@ class NotesListFragment : BaseFragment() {
         binding.addNewNoteBtn.setOnClickListener {
             findNavController().navigate(R.id.action_NotesListFragment_to_NoteFragment)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
