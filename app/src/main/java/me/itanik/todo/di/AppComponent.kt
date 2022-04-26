@@ -4,6 +4,8 @@ import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
 import me.itanik.todo.di.modules.AppModule
+import me.itanik.todo.di.utils.ViewModelFactory
+import me.itanik.todo.presentation.note.NoteViewModel
 import javax.inject.Singleton
 
 @Component(
@@ -18,4 +20,6 @@ interface AppComponent {
     interface Factory {
         fun create(@BindsInstance applicationContext: Context): AppComponent
     }
+
+    fun noteViewModelFactory(): ViewModelFactory<NoteViewModel>
 }
