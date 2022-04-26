@@ -5,6 +5,7 @@ import dagger.BindsInstance
 import dagger.Component
 import me.itanik.todo.di.modules.AppModule
 import me.itanik.todo.di.utils.ViewModelFactory
+import me.itanik.todo.presentation.list_of_notes.NoteListViewModel
 import me.itanik.todo.presentation.note.NoteViewModel
 import javax.inject.Singleton
 
@@ -22,4 +23,5 @@ interface AppComponent {
     }
 
     fun noteViewModelFactory(): ViewModelFactory<NoteViewModel>
+    fun noteListViewModelFactory(): ViewModelFactory<NoteListViewModel>
 }

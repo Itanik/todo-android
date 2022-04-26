@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import me.itanik.todo.R
 import me.itanik.todo.databinding.FragmentNotesListBinding
+import me.itanik.todo.presentation.base.BaseFragment
 
 /**
  * A fragment that contains list of td notes
  */
-class NotesListFragment : Fragment() {
+class NotesListFragment : BaseFragment() {
 
+    private val viewModel by viewModel(NoteListViewModel::class.java) { noteListViewModelFactory() }
     private var _binding: FragmentNotesListBinding? = null
     private val binding get() = _binding!!
 
