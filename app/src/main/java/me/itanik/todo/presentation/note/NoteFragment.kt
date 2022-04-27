@@ -3,7 +3,11 @@ package me.itanik.todo.presentation.note
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.flow.collectLatest
+import me.itanik.todo.data.model.Event
 import me.itanik.todo.databinding.FragmentNoteBinding
 import me.itanik.todo.presentation.base.BaseFragment
 import me.itanik.todo.presentation.note.dialogs.DatePickerDialog
@@ -23,7 +27,18 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>() {
 
         binding.apply {
             saveNoteBtn.setOnClickListener {
-                findNavController().popBackStack()
+                val title = titleEditText.text.toString()
+                val details = detailsEdittext.text.toString()
+
+                if (title.isBlank()) {
+                    Toast.makeText(context, "Title cannot be blank", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                saveNoteBtn.isEnabled = false
+                viewModel.saveNote(
+                    title,
+                    details
+                )
             }
             selectDateBtn.setOnClickListener {
                 showDatePickerDialog()
@@ -32,13 +47,32 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>() {
                 showTimePickerDialog()
             }
         }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.savingResult.collectLatest { event ->
+                when (event) {
+                    Event.Success -> {
+                        Toast.makeText(context, "Note created successfully", Toast.LENGTH_SHORT)
+                            .show()
+                        findNavController().popBackStack()
+                    }
+                    else -> {
+                        binding.saveNoteBtn.isEnabled = true
+                    }
+                }
+            }
+        }
     }
 
     private fun showDatePickerDialog() {
-        DatePickerDialog().show(parentFragmentManager, "datePicker")
+        DatePickerDialog().apply {
+            onDateSet = viewModel::onEstDateSet
+        }.show(parentFragmentManager, "datePicker")
     }
 
     private fun showTimePickerDialog() {
-        TimePickerDialog().show(parentFragmentManager, "timePicker")
+        TimePickerDialog().apply {
+            onTimeSet = viewModel::onEstTimeSet
+        }.show(parentFragmentManager, "timePicker")
     }
 }

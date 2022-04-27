@@ -9,17 +9,30 @@ import java.util.*
 
 class DatePickerDialog : DialogFragment(), android.app.DatePickerDialog.OnDateSetListener {
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        // Use the current date as the default date in the picker
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
+    /**
+     * Lambda called when the user is done setting a new date and the dialog has closed.
+     *
+     * First param is an year.
+     * Second param is a month.
+     * Third param is a day.
+     */
+    var onDateSet: ((Int, Int, Int) -> Unit)? = null
 
-        return android.app.DatePickerDialog(requireContext(), this, year, month, day)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        // Use the current date as the initial date in the picker
+        Calendar.getInstance().apply {
+            return android.app.DatePickerDialog(
+                requireContext(),
+                this@DatePickerDialog,
+                get(Calendar.YEAR),
+                get(Calendar.MONTH),
+                get(Calendar.DAY_OF_MONTH)
+            )
+        }
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
+        onDateSet?.let { it(year, month, day) }
         Timber.d("Date set: year=$year, month=$month, day=$day")
     }
 }

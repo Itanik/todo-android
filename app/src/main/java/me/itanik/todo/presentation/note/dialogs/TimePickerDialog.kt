@@ -10,17 +10,29 @@ import java.util.*
 
 class TimePickerDialog : DialogFragment(), android.app.TimePickerDialog.OnTimeSetListener {
 
+    /**
+     * Lambda called when the user is done setting a new time and the dialog has closed.
+     *
+     * First param is a hour.
+     * Second param is a minute.
+     */
+    var onTimeSet: ((Int, Int) -> Unit)? = null
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // Use the current time as the default values for the picker
-        val c = Calendar.getInstance()
-        val hour = c.get(Calendar.HOUR_OF_DAY)
-        val minute = c.get(Calendar.MINUTE)
-
-        // Create a new instance of TimePickerDialog and return it
-        return android.app.TimePickerDialog(activity, this, hour, minute, DateFormat.is24HourFormat(activity))
+        Calendar.getInstance().apply {
+            return android.app.TimePickerDialog(
+                activity,
+                this@TimePickerDialog,
+                get(Calendar.HOUR_OF_DAY),
+                get(Calendar.MINUTE),
+                DateFormat.is24HourFormat(activity)
+            )
+        }
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        onTimeSet?.let { it(hourOfDay, minute) }
         Timber.d("Time set: hour=$hourOfDay, minute=$minute")
     }
 }

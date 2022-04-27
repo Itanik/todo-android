@@ -7,72 +7,64 @@
     tools:context=".presentation.note.NoteFragment">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/title_headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_medium"
-        android:text="Title"
+        android:text="@string/title"
+        android:textAppearance="@android:style/TextAppearance.Material.Title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/title_edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_medium"
         android:ems="10"
+        android:hint="@string/title"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:hint="title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/title_headline"
+        android:importantForAutofill="no" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/details_headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_medium"
-        android:text="Description"
+        android:text="@string/description"
+        android:textAppearance="@android:style/TextAppearance.Material.Title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toBottomOf="@+id/title_edit_text" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/details_edittext"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="@dimen/margin_medium"
         android:background="@android:color/transparent"
         android:ems="10"
         android:gravity="top"
-        android:hint="write description here"
+        android:hint="@string/description_hint"
         android:inputType="textPersonName"
         android:minHeight="400dp"
         app:layout_constraintBottom_toTopOf="@+id/select_date_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/save_note_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"
-        android:contentDescription="Save new note"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_save" />
+        app:layout_constraintTop_toBottomOf="@+id/details_headline"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/select_date_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_medium"
-        android:text="Select Date"
+        android:text="@string/select_date"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/select_time_btn"
         app:layout_constraintStart_toStartOf="parent" />
@@ -81,9 +73,21 @@
         android:id="@+id/select_time_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Time"
+        android:text="@string/select_time"
         app:layout_constraintBottom_toBottomOf="@+id/select_date_btn"
         app:layout_constraintEnd_toStartOf="@+id/save_note_btn"
         app:layout_constraintStart_toEndOf="@+id/select_date_btn" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/save_note_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:contentDescription="@string/description_save_new_note"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_save" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

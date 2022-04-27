@@ -5,7 +5,7 @@ import me.itanik.todo.di.AppComponent
 import me.itanik.todo.di.DaggerAppComponent
 import timber.log.Timber
 
-class App : Application(), AppComponentHolder {
+class App : Application(), AppComponentProvider {
 
     override val appComponent: AppComponent by lazy {
         DaggerAppComponent.factory().create(applicationContext)
@@ -17,6 +17,6 @@ class App : Application(), AppComponentHolder {
     }
 }
 
-interface AppComponentHolder {
+interface AppComponentProvider {
     val appComponent: AppComponent
 }
