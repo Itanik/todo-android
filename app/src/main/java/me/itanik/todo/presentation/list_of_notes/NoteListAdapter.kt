@@ -23,9 +23,11 @@ class NoteListAdapter : ListAdapter<Note, NoteListAdapter.NoteViewHolder>(NoteLi
 
     class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val titleTextView: TextView = itemView.findViewById(R.id.note_item_title)
+        private val detailsTextView: TextView = itemView.findViewById(R.id.note_item_details)
 
         fun bind(note: Note) {
             titleTextView.text = note.title
+            detailsTextView.text = note.details
         }
     }
 }
