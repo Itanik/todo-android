@@ -7,7 +7,7 @@ import androidx.fragment.app.DialogFragment
 import timber.log.Timber
 import java.util.*
 
-class DatePickerDialog(private val initialTime: Calendar? = null) : DialogFragment(),
+class DatePickerDialog(private val initialDate: Date? = null) : DialogFragment(),
     android.app.DatePickerDialog.OnDateSetListener {
 
     /**
@@ -20,8 +20,10 @@ class DatePickerDialog(private val initialTime: Calendar? = null) : DialogFragme
     var onDateSet: ((Int, Int, Int) -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val time = initialTime ?: Calendar.getInstance()
-        time.apply {
+        Calendar.getInstance().apply {
+            if (initialDate != null)
+                time = initialDate
+
             return android.app.DatePickerDialog(
                 requireContext(),
                 this@DatePickerDialog,

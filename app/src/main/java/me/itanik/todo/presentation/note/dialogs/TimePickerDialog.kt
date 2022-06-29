@@ -8,7 +8,7 @@ import androidx.fragment.app.DialogFragment
 import timber.log.Timber
 import java.util.*
 
-class TimePickerDialog(private val initialTime: Calendar? = null) : DialogFragment(),
+class TimePickerDialog(private val initialDate: Date? = null) : DialogFragment(),
     android.app.TimePickerDialog.OnTimeSetListener {
 
     /**
@@ -20,8 +20,10 @@ class TimePickerDialog(private val initialTime: Calendar? = null) : DialogFragme
     var onTimeSet: ((Int, Int) -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val time = initialTime ?: Calendar.getInstance()
-        time.apply {
+        Calendar.getInstance().apply {
+            if (initialDate != null)
+                time = initialDate
+
             return android.app.TimePickerDialog(
                 activity,
                 this@TimePickerDialog,
