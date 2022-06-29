@@ -4,10 +4,13 @@ import me.itanik.todo.data.local.db.dao.NoteDao
 import me.itanik.todo.data.model.Note
 import me.itanik.todo.data.model.toNote
 import me.itanik.todo.data.model.toNoteEntity
+import java.util.*
 import javax.inject.Inject
 
 interface NotesRepository {
     suspend fun getNotes(): List<Note>
+
+    suspend fun getNoteById(id: UUID): Note
 
     suspend fun addNote(note: Note)
 
@@ -22,6 +25,10 @@ class NotesRepositoryImpl @Inject constructor(
 
     override suspend fun getNotes(): List<Note> {
         return noteDao.getAll().map { it.toNote() }
+    }
+
+    override suspend fun getNoteById(id: UUID): Note {
+        return noteDao.getNoteById(id).toNote()
     }
 
     override suspend fun addNote(note: Note) {

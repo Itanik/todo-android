@@ -9,6 +9,7 @@ import java.util.*
     tableName = "notes"
 )
 data class NoteEntity(
+    // note can be received from the server
     @PrimaryKey(autoGenerate = false)
     val id: UUID,
     val title: String,
