@@ -16,7 +16,6 @@ Networking:
 * Sync with <a href="https://github.com/Itanik/Notes.Backend">my notes server</a>
 
 Addition:
-* Sync with the <a href="https://developer.todoist.com/guides/#developing-with-todoist">Todoist API</a> via Retrofit.
 * Unit tests
 * Instrumental tests
 * Schedule tasks with WorkManager
