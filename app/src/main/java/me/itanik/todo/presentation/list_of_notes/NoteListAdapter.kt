@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import me.itanik.todo.R
 import me.itanik.todo.data.model.Note
 
-class NoteListAdapter : ListAdapter<Note, NoteListAdapter.NoteViewHolder>(NoteListDiffCallback) {
+class NoteListAdapter(private val onItemClick: (Note) -> Unit) :
+    ListAdapter<Note, NoteListAdapter.NoteViewHolder>(NoteListDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_note, parent, false)
@@ -18,7 +19,9 @@ class NoteListAdapter : ListAdapter<Note, NoteListAdapter.NoteViewHolder>(NoteLi
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val note = getItem(position)
+        holder.bind(note)
+        holder.itemView.setOnClickListener { onItemClick(note) }
     }
 
     class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

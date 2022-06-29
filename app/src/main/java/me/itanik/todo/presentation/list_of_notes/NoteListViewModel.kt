@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import me.itanik.todo.data.model.Note
 import me.itanik.todo.data.repository.NotesRepository
-import timber.log.Timber
 import javax.inject.Inject
 
 class NoteListViewModel @Inject constructor(

@@ -1,13 +1,10 @@
 package me.itanik.todo.presentation.list_of_notes
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collectLatest
 import me.itanik.todo.R
 import me.itanik.todo.databinding.FragmentNotesListBinding
@@ -34,7 +31,9 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
     }
 
     private fun initRecyclerView() {
-        val adapter = NoteListAdapter()
+        val adapter = NoteListAdapter { clickedNote ->
+
+        }
         binding.recyclerView.adapter = adapter
 
         lifecycleScope.launchWhenStarted {
