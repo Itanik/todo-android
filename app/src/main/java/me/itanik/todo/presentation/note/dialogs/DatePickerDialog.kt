@@ -1,5 +1,6 @@
 package me.itanik.todo.presentation.note.dialogs
 
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.DatePicker
@@ -8,7 +9,10 @@ import timber.log.Timber
 import java.util.*
 
 class DatePickerDialog(private val initialDate: Date? = null) : DialogFragment(),
-    android.app.DatePickerDialog.OnDateSetListener {
+    DatePickerDialog.OnDateSetListener {
+    private var year: Int? = null
+    private var month: Int? = null
+    private var day: Int? = null
 
     /**
      * Lambda called when the user is done setting a new date and the dialog has closed.
@@ -24,17 +28,21 @@ class DatePickerDialog(private val initialDate: Date? = null) : DialogFragment()
             if (initialDate != null)
                 time = initialDate
 
-            return android.app.DatePickerDialog(
+            return DatePickerDialog(
                 requireContext(),
                 this@DatePickerDialog,
-                get(Calendar.YEAR),
-                get(Calendar.MONTH),
-                get(Calendar.DAY_OF_MONTH)
+                year ?: get(Calendar.YEAR),
+                month ?: get(Calendar.MONTH),
+                day ?: get(Calendar.DAY_OF_MONTH)
             )
         }
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
+        this.year = year
+        this.month = month
+        this.day = day
+
         onDateSet?.let { it(year, month, day) }
         Timber.d("Date set: year=$year, month=$month, day=$day")
     }

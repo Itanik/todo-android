@@ -25,7 +25,7 @@ class NoteViewModel @Inject constructor(
         if (id == null)
             saveNew(title, details)
         else
-            saveOld(title, details, id)
+            updateOld(title, details, id)
 
         _savingResult.value = Event.Success
         _savingResult.value = Event.Idle
@@ -43,7 +43,7 @@ class NoteViewModel @Inject constructor(
         notesRepository.addNote(note)
     }
 
-    private suspend fun saveOld(title: String, details: String, id: String) {
+    private suspend fun updateOld(title: String, details: String, id: String) {
         val note = notesRepository.getNoteById(UUID.fromString(id))
 
         notesRepository.updateNote(
@@ -96,19 +96,14 @@ class NoteViewModel @Inject constructor(
             this.minute = minute
         }
 
-        fun getDayTime(): Date? {
-            if (!calendarEdited) return null
-
-            val currentCalendar = GregorianCalendar.getInstance()
-            return computeDate(currentCalendar)
-        }
-
-        fun getDayTime(oldDate: Date?): Date? {
-            oldDate ?: return null
+        fun getDayTime(oldDate: Date? = null): Date? {
             if (!calendarEdited) return oldDate
 
-            val oldCalendar = Calendar.Builder().apply { setInstant(oldDate) }.build()
-            return computeDate(oldCalendar)
+            val currentCalendar = if (oldDate != null)
+                Calendar.Builder().apply { setInstant(oldDate) }.build()
+            else
+                GregorianCalendar.getInstance()
+            return computeDate(currentCalendar)
         }
 
         private fun computeDate(currentCalendar: Calendar): Date {

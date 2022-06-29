@@ -26,6 +26,16 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>() {
     private val viewModel by viewModel(NoteViewModel::class.java) { noteViewModelFactory() }
     override val bindingInflater: (LayoutInflater) -> FragmentNoteBinding
         get() = FragmentNoteBinding::inflate
+    private val datePickerDialog: DatePickerDialog by lazy {
+        DatePickerDialog(estimationDate).apply {
+            onDateSet = viewModel::onEstDateSet
+        }
+    }
+    private val timePickerDialog: TimePickerDialog by lazy {
+        TimePickerDialog(estimationDate).apply {
+            onTimeSet = viewModel::onEstTimeSet
+        }
+    }
 
     private val noteId: String?
         get() = arguments?.getString(NOTE_ID_ARG_TAG)
@@ -87,14 +97,10 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>() {
     }
 
     private fun showDatePickerDialog() {
-        DatePickerDialog(estimationDate).apply {
-            onDateSet = viewModel::onEstDateSet
-        }.show(parentFragmentManager, "datePicker")
+        datePickerDialog.show(parentFragmentManager, "datePicker")
     }
 
     private fun showTimePickerDialog() {
-        TimePickerDialog(estimationDate).apply {
-            onTimeSet = viewModel::onEstTimeSet
-        }.show(parentFragmentManager, "timePicker")
+        timePickerDialog.show(parentFragmentManager, "timePicker")
     }
 }
