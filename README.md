@@ -8,7 +8,8 @@ Main:
 * <s>Notes addition</s>
 * <s>Notes displaying</s>
 * <s>Data storing in DB</s>
-* Notes editing
+* Note editing
+* Note deleting
 * Implementing design
 
 Networking:
