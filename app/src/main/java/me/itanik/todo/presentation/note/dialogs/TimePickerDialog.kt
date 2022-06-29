@@ -8,7 +8,8 @@ import androidx.fragment.app.DialogFragment
 import timber.log.Timber
 import java.util.*
 
-class TimePickerDialog : DialogFragment(), android.app.TimePickerDialog.OnTimeSetListener {
+class TimePickerDialog(private val initialTime: Calendar? = null) : DialogFragment(),
+    android.app.TimePickerDialog.OnTimeSetListener {
 
     /**
      * Lambda called when the user is done setting a new time and the dialog has closed.
@@ -19,8 +20,8 @@ class TimePickerDialog : DialogFragment(), android.app.TimePickerDialog.OnTimeSe
     var onTimeSet: ((Int, Int) -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        // Use the current time as the default values for the picker
-        Calendar.getInstance().apply {
+        val time = initialTime ?: Calendar.getInstance()
+        time.apply {
             return android.app.TimePickerDialog(
                 activity,
                 this@TimePickerDialog,

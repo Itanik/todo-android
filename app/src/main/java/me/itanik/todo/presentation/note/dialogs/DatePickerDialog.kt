@@ -7,7 +7,8 @@ import androidx.fragment.app.DialogFragment
 import timber.log.Timber
 import java.util.*
 
-class DatePickerDialog : DialogFragment(), android.app.DatePickerDialog.OnDateSetListener {
+class DatePickerDialog(private val initialTime: Calendar? = null) : DialogFragment(),
+    android.app.DatePickerDialog.OnDateSetListener {
 
     /**
      * Lambda called when the user is done setting a new date and the dialog has closed.
@@ -19,8 +20,8 @@ class DatePickerDialog : DialogFragment(), android.app.DatePickerDialog.OnDateSe
     var onDateSet: ((Int, Int, Int) -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        // Use the current date as the initial date in the picker
-        Calendar.getInstance().apply {
+        val time = initialTime ?: Calendar.getInstance()
+        time.apply {
             return android.app.DatePickerDialog(
                 requireContext(),
                 this@DatePickerDialog,
