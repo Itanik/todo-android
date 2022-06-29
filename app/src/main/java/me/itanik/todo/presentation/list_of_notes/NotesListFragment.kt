@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.collectLatest
 import me.itanik.todo.R
 import me.itanik.todo.databinding.FragmentNotesListBinding
 import me.itanik.todo.presentation.base.BaseFragment
+import me.itanik.todo.presentation.note.NOTE_ID_ARG_TAG
 import timber.log.Timber
 
 /**
@@ -32,7 +33,10 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
 
     private fun initRecyclerView() {
         val adapter = NoteListAdapter { clickedNote ->
-
+            val args = Bundle().apply {
+                putString(NOTE_ID_ARG_TAG, clickedNote.id.toString())
+            }
+            findNavController().navigate(R.id.action_NotesListFragment_to_NoteFragment, args)
         }
         binding.recyclerView.adapter = adapter
 
