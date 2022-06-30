@@ -14,63 +14,121 @@ import javax.inject.Inject
 class NoteViewModel @Inject constructor(
     private val notesRepository: NotesRepository
 ) : ViewModel() {
-    private var estimationDate = EstimationDate()
     private val _savingResult: MutableStateFlow<Event> = MutableStateFlow(Event.Idle)
     val savingResult: StateFlow<Event>
         get() = _savingResult
+    private val calendar = NormalCalendar()
+
+    fun saveNote(title: String, details: String, id: String? = null) = viewModelScope.launch {
+        _savingResult.value = Event.InProgress
+
+        if (id == null)
+            saveNew(title, details)
+        else
+            updateOld(title, details, id)
+
+        _savingResult.value = Event.Success
+        _savingResult.value = Event.Idle
+    }
+
+    private suspend fun saveNew(title: String, details: String) {
+        val note = Note(
+            id = UUID.randomUUID(),
+            title = title,
+            details = details,
+            creationDate = Calendar.getInstance().time,
+            estimationDate = calendar.getDayTime()
+        )
+
+        notesRepository.addNote(note)
+    }
+
+    private suspend fun updateOld(title: String, details: String, id: String) {
+        val note = notesRepository.getNoteById(UUID.fromString(id))
+
+        notesRepository.updateNote(
+            note.copy(
+                title = title,
+                details = details,
+                editDate = Calendar.getInstance().time,
+                estimationDate = calendar.getDayTime(note.estimationDate)
+            )
+        )
+    }
+
+    suspend fun getNote(noteId: String): Note {
+        return notesRepository.getNoteById(UUID.fromString(noteId))
+    }
 
     fun onEstDateSet(year: Int, month: Int, day: Int) {
-        estimationDate = estimationDate.copy(
-            year = year,
-            month = month,
-            day = day
-        )
+        calendar.setDate(year, month, day)
     }
 
     fun onEstTimeSet(hour: Int, minute: Int) {
-        estimationDate = estimationDate.copy(
-            hour = hour,
-            minute = minute
-        )
+        calendar.setTime(hour, minute)
     }
 
-    fun saveNote(title: String, details: String) {
-        _savingResult.value = Event.InProgress
+    /**
+     * Normal calendar without shitty exceptions when values overridden
+     */
+    private class NormalCalendar {
+        private var year: Int? = null
+        private var month: Int? = null
+        private var day: Int? = null
+        private var hour: Int? = null
+        private var minute: Int? = null
 
-        val note = Note(
-            UUID.randomUUID(),
-            title,
-            details,
-            Calendar.getInstance().time,
-            estimationDate = estimationDate.toDate()
-        )
-        viewModelScope.launch {
-            notesRepository.addNote(note)
-            _savingResult.value = Event.Success
-            _savingResult.value = Event.Idle
+        private val dateEdited: Boolean
+            get() = year != null && month != null && day != null
+        private val timeEdited: Boolean
+            get() = hour != null && minute != null
+        private val calendarEdited: Boolean
+            get() = dateEdited || timeEdited
+
+        fun setDate(year: Int, month: Int, day: Int) {
+            this.year = year
+            this.month = month
+            this.day = day
+        }
+
+        fun setTime(hour: Int, minute: Int) {
+            this.hour = hour
+            this.minute = minute
+        }
+
+        fun getDayTime(oldDate: Date? = null): Date? {
+            if (!calendarEdited) return oldDate
+
+            val currentCalendar = if (oldDate != null)
+                Calendar.Builder().apply { setInstant(oldDate) }.build()
+            else
+                GregorianCalendar.getInstance()
+            return computeDate(currentCalendar)
+        }
+
+        private fun computeDate(currentCalendar: Calendar): Date {
+            val builder = Calendar.Builder()
+            if (dateEdited) {
+                builder.setDate(year!!, month!!, day!!)
+                if (!timeEdited) {
+                    builder.setTimeOfDay(
+                        currentCalendar.get(Calendar.HOUR_OF_DAY),
+                        currentCalendar.get(Calendar.MINUTE),
+                        0
+                    )
+                }
+            }
+            if (timeEdited) {
+                builder.setTimeOfDay(hour!!, minute!!, 0)
+                if (!dateEdited) {
+                    builder.setDate(
+                        currentCalendar.get(Calendar.YEAR),
+                        currentCalendar.get(Calendar.MONTH),
+                        currentCalendar.get(Calendar.DAY_OF_MONTH),
+                    )
+                }
+            }
+            return builder.build().time
         }
     }
-}
-
-data class EstimationDate(
-    val year: Int? = null,
-    val month: Int? = null,
-    val day: Int? = null,
-    val hour: Int? = null,
-    val minute: Int? = null
-)
-
-fun EstimationDate.toDate(): Date? {
-    val calendar = if (year != null && month != null && day != null) {
-        GregorianCalendar(year, month, day)
-    } else {
-        if (hour == null && minute == null)
-            return null
-        GregorianCalendar.getInstance()
-    }
-
-    hour?.let { calendar.set(Calendar.HOUR, it) }
-    minute?.let { calendar.set(Calendar.MINUTE, it) }
-
-    return calendar.time
 }

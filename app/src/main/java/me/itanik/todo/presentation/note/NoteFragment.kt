@@ -7,23 +7,43 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import me.itanik.todo.data.model.Event
 import me.itanik.todo.databinding.FragmentNoteBinding
 import me.itanik.todo.presentation.base.BaseFragment
 import me.itanik.todo.presentation.note.dialogs.DatePickerDialog
 import me.itanik.todo.presentation.note.dialogs.TimePickerDialog
+import java.util.*
+
+const val NOTE_ID_ARG_TAG = "note_id"
 
 /**
  * A fragment for note creation/modification.
  */
 class NoteFragment : BaseFragment<FragmentNoteBinding>() {
 
+    private var estimationDate: Date? = null
     private val viewModel by viewModel(NoteViewModel::class.java) { noteViewModelFactory() }
     override val bindingInflater: (LayoutInflater) -> FragmentNoteBinding
         get() = FragmentNoteBinding::inflate
+    private val datePickerDialog: DatePickerDialog by lazy {
+        DatePickerDialog(estimationDate).apply {
+            onDateSet = viewModel::onEstDateSet
+        }
+    }
+    private val timePickerDialog: TimePickerDialog by lazy {
+        TimePickerDialog(estimationDate).apply {
+            onTimeSet = viewModel::onEstTimeSet
+        }
+    }
+
+    private val noteId: String?
+        get() = arguments?.getString(NOTE_ID_ARG_TAG)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        restoreNote()
 
         binding.apply {
             saveNoteBtn.setOnClickListener {
@@ -37,7 +57,8 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>() {
                 saveNoteBtn.isEnabled = false
                 viewModel.saveNote(
                     title,
-                    details
+                    details,
+                    noteId
                 )
             }
             selectDateBtn.setOnClickListener {
@@ -64,15 +85,22 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>() {
         }
     }
 
+    private fun restoreNote() = lifecycleScope.launch {
+        noteId?.let { noteId ->
+            val note = viewModel.getNote(noteId)
+            binding.apply {
+                titleEditText.setText(note.title)
+                detailsEdittext.setText(note.details)
+                estimationDate = note.estimationDate
+            }
+        }
+    }
+
     private fun showDatePickerDialog() {
-        DatePickerDialog().apply {
-            onDateSet = viewModel::onEstDateSet
-        }.show(parentFragmentManager, "datePicker")
+        datePickerDialog.show(parentFragmentManager, "datePicker")
     }
 
     private fun showTimePickerDialog() {
-        TimePickerDialog().apply {
-            onTimeSet = viewModel::onEstTimeSet
-        }.show(parentFragmentManager, "timePicker")
+        timePickerDialog.show(parentFragmentManager, "timePicker")
     }
 }
