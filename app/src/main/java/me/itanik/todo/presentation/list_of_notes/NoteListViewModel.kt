@@ -16,10 +16,13 @@ class NoteListViewModel @Inject constructor(
     val notesStateFlow: StateFlow<List<Note>>
         get() = _notesStateFlow
 
-    fun updateNotesList() {
-        viewModelScope.launch {
-            _notesStateFlow.value = notesRepository.getNotes()
-        }
+    fun updateNotesList() = viewModelScope.launch {
+        _notesStateFlow.value = notesRepository.getNotes()
+    }
+
+    fun removeNote(note: Note) = viewModelScope.launch {
+        notesRepository.deleteNote(note)
+        updateNotesList()
     }
 
 }
