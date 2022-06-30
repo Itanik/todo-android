@@ -33,6 +33,11 @@ class NoteListAdapter(private val onItemClick: (Note) -> Unit) :
             detailsTextView.text = note.details
         }
     }
+
+    fun removeItemOnPosition(position: Int) {
+        currentList.toMutableList().removeAt(position)
+        notifyItemRemoved(position)
+    }
 }
 
 object NoteListDiffCallback : DiffUtil.ItemCallback<Note>() {
