@@ -9,7 +9,7 @@ Main:
 * <s>Notes displaying</s>
 * <s>Data storing in DB</s>
 * <s>Note editing</s>
-* Note deleting
+* <s>Note deleting</s>
 * Implementing design
 
 Networking:
@@ -17,5 +17,10 @@ Networking:
 
 Addition:
 * Sync with the <a href="https://developer.todoist.com/guides/#developing-with-todoist">Todoist API</a> via Retrofit.
+* Unit tests
+* Instrumental tests
+* Schedule tasks with WorkManager
+* Show tasks in front of note list
+* On note tap open floating window for editing.
 
 Planned stack: Room, Retrofit, Dagger, RXJava, Espresso, Android Jetpack.
