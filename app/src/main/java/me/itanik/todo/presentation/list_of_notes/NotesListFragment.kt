@@ -45,7 +45,6 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
         binding.recyclerView.adapter = adapter
         val onItemSwiped = ItemSwipeCallback { position ->
             val note = adapter.currentList[position]
-            adapter.removeItemOnPosition(position)
             viewModel.removeNote(note)
         }
         ItemTouchHelper(onItemSwiped).attachToRecyclerView(binding.recyclerView)
