@@ -29,7 +29,11 @@ class NoteListAdapter(private val onItemClick: (Note) -> Unit) :
         private val detailsTextView: TextView = itemView.findViewById(R.id.note_item_details)
 
         fun bind(note: Note) {
-            titleTextView.text = note.title
+            if (note.title.isBlank())
+                titleTextView.visibility = View.GONE
+            else
+                titleTextView.text = note.title
+
             detailsTextView.text = note.details
         }
     }
