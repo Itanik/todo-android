@@ -2,8 +2,10 @@ package me.itanik.todo.presentation.list_of_notes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.itanik.todo.data.model.Note
 import me.itanik.todo.data.model.Result
@@ -17,16 +19,16 @@ data class NoteListState(
 class NoteListViewModel @Inject constructor(
     private val notesRepository: NotesRepository
 ) : ViewModel() {
-    private val _noteListStateFlow = MutableStateFlow<Result<NoteListState>>(Result.Initial)
-    val noteListStateFlow: StateFlow<Result<NoteListState>> get() = _noteListStateFlow
-
-    fun updateNotesList() = viewModelScope.launch {
-        _noteListStateFlow.value = Result.Loading
-        _noteListStateFlow.value = Result.Success(NoteListState(notesRepository.getNotes()))
-    }
+    val noteListStateFlow: StateFlow<Result<NoteListState>> =
+        notesRepository.getNotes()
+            .map { Result.Success(NoteListState(it)) }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(1000),
+                initialValue = Result.Initial
+            )
 
     fun removeNote(note: Note) = viewModelScope.launch {
         notesRepository.deleteNote(note)
-        updateNotesList()
     }
 }
