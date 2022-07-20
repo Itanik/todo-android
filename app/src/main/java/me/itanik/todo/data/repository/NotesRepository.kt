@@ -1,5 +1,7 @@
 package me.itanik.todo.data.repository
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import me.itanik.todo.data.local.db.dao.NoteDao
 import me.itanik.todo.data.model.Note
 import me.itanik.todo.data.model.toNote
@@ -8,7 +10,7 @@ import java.util.*
 import javax.inject.Inject
 
 interface NotesRepository {
-    suspend fun getNotes(): List<Note>
+    fun getNotes(): Flow<List<Note>>
 
     suspend fun getNoteById(id: UUID): Note
 
@@ -23,8 +25,8 @@ class NotesRepositoryImpl @Inject constructor(
     private val noteDao: NoteDao
 ) : NotesRepository {
 
-    override suspend fun getNotes(): List<Note> {
-        return noteDao.getAll().map { it.toNote() }
+    override fun getNotes(): Flow<List<Note>> {
+        return noteDao.getAll().map { list -> list.map { it.toNote() } }
     }
 
     override suspend fun getNoteById(id: UUID): Note {

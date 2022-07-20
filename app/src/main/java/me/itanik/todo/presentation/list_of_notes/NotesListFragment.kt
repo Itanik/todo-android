@@ -3,6 +3,7 @@ package me.itanik.todo.presentation.list_of_notes
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.view.postDelayed
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -47,8 +48,13 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
         initRecyclerView()
         initDataObserving()
 
-        binding.swipeRefresh.setOnRefreshListener {
-            viewModel.updateNotesList()
+        with(binding.swipeRefresh) {
+            setOnRefreshListener {
+                // there is no updating logic while network data source not configured
+                postDelayed(100L) {
+                    isRefreshing = false
+                }
+            }
         }
     }
 
@@ -73,10 +79,10 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
                             noteListAdapter.submitList(result.data.noteList)
                             Timber.d("Submit notes list")
                         }
+                        else -> {}
                     }
                 }
         }
-        viewModel.updateNotesList()
     }
 
     override fun onStop() {

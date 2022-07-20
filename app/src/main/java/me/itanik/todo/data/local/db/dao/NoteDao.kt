@@ -1,13 +1,14 @@
 package me.itanik.todo.data.local.db.dao
 
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 import me.itanik.todo.data.local.db.entity.NoteEntity
 import java.util.*
 
 @Dao
 interface NoteDao {
     @Query("SELECT * FROM notes")
-    suspend fun getAll(): List<NoteEntity>
+    fun getAll(): Flow<List<NoteEntity>>
 
     @Query("SELECT * FROM notes WHERE id = :id")
     suspend fun getNoteById(id: UUID): NoteEntity
