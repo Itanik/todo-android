@@ -51,7 +51,7 @@
         android:ems="10"
         android:gravity="top"
         android:hint="@string/description_hint"
-        android:inputType="textPersonName"
+        android:inputType="textMultiLine"
         android:minHeight="400dp"
         app:layout_constraintBottom_toTopOf="@+id/select_date_btn"
         app:layout_constraintEnd_toEndOf="parent"

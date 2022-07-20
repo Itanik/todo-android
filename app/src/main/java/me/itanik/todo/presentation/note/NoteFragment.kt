@@ -50,8 +50,12 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>() {
                 val title = titleEditText.text.toString()
                 val details = detailsEdittext.text.toString()
 
-                if (title.isBlank()) {
-                    Toast.makeText(context, "Title cannot be blank", Toast.LENGTH_SHORT).show()
+                if (title.isBlank() && details.isBlank()) {
+                    Toast.makeText(
+                        context,
+                        "Title and details cannot be blank at the same time",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     return@setOnClickListener
                 }
                 saveNoteBtn.isEnabled = false
