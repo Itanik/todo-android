@@ -22,4 +22,4 @@ Addition:
 * Show tasks in front of note list
 * On note tap open floating window for editing.
 
-Planned stack: Room, Retrofit, Dagger, RXJava, Espresso, Android Jetpack.
+Planned stack: Kotlin, Room, Retrofit, Dagger, Kotlin FLow, Espresso, Android Jetpack.
