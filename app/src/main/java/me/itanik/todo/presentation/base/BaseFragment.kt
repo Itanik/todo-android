@@ -8,14 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
-import me.itanik.todo.AppComponentProvider
 import me.itanik.todo.di.AppComponent
+import me.itanik.todo.di.utils.appComponent
 import me.itanik.todo.di.utils.getViewModel
 
 abstract class BaseFragment<out VB : ViewBinding> : Fragment() {
-    private val appComponent: AppComponent
-        get() = (requireActivity().application as AppComponentProvider).appComponent
-
     private var _binding: VB? = null
     protected val binding: VB
         get() = _binding
@@ -46,7 +43,7 @@ abstract class BaseFragment<out VB : ViewBinding> : Fragment() {
         viewModelFactory: AppComponent.() -> F
     ): Lazy<T> = lazy {
         getViewModel(
-            appComponent.viewModelFactory(),
+            requireContext().appComponent.viewModelFactory(),
             viewModelClass
         )
     }
