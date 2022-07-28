@@ -9,7 +9,6 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import me.itanik.todo.R
@@ -28,7 +27,6 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
     private val viewModel by viewModel(NoteListViewModel::class.java) { noteListViewModelFactory() }
     override val bindingInflater: (LayoutInflater) -> FragmentNotesListBinding
         get() = FragmentNotesListBinding::inflate
-    private var observingStateJob: Job? = null
     private val noteListAdapter by lazy {
         NoteListAdapter { clickedNote ->
             val args = Bundle().apply {
@@ -46,7 +44,6 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
         }
 
         initRecyclerView()
-        initDataObserving()
 
         with(binding.swipeRefresh) {
             setOnRefreshListener {
@@ -56,6 +53,11 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
                 }
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initDataObserving()
     }
 
     private fun initRecyclerView() {
@@ -68,25 +70,18 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
         ItemTouchHelper(onItemSwiped).attachToRecyclerView(binding.recyclerView)
     }
 
-    private fun initDataObserving() {
-        observingStateJob = lifecycleScope.launch {
-            viewModel.noteListStateFlow
-                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                .collectLatest { result ->
-                    when (result) {
-                        is Result.Success -> {
-                            binding.swipeRefresh.isRefreshing = false
-                            noteListAdapter.submitList(result.data.noteList)
-                            Timber.d("Submit notes list")
-                        }
-                        else -> {}
+    private fun initDataObserving() = lifecycleScope.launch {
+        viewModel.noteListStateFlow
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .collectLatest { result ->
+                when (result) {
+                    is Result.Success -> {
+                        binding.swipeRefresh.isRefreshing = false
+                        noteListAdapter.submitList(result.data.noteList)
+                        Timber.d("Submit notes list")
                     }
+                    else -> {}
                 }
-        }
-    }
-
-    override fun onStop() {
-        observingStateJob?.cancel()
-        super.onStop()
+            }
     }
 }
