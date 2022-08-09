@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/NotesListFragment">
+    android:id="@+id/nav_graph_notes"
 
+    app:startDestination="@id/notesListFragment">
     <fragment
-        android:id="@+id/NotesListFragment"
+        android:id="@+id/notesListFragment"
         android:name="me.itanik.todo.presentation.list_of_notes.NotesListFragment"
-        android:label="@string/notes_list_fragment_label"
-        tools:layout="@layout/fragment_notes_list">
+        android:label="@string/notes_list_fragment_label">
 
         <action
             android:id="@+id/action_NotesListFragment_to_NoteFragment"
-            app:destination="@id/NoteFragment" />
+            app:destination="@id/noteFragment" />
     </fragment>
     <fragment
-        android:id="@+id/NoteFragment"
+        android:id="@+id/noteFragment"
         android:name="me.itanik.todo.presentation.note.NoteFragment"
-        android:label="@string/note_fragment_label"
-        tools:layout="@layout/fragment_note">
+        android:label="@string/note_fragment_label">
 
         <action
             android:id="@+id/action_NoteFragment_to_NotesListFragment"
-            app:destination="@id/NotesListFragment" />
+            app:destination="@id/notesListFragment" />
     </fragment>
 </navigation>

@@ -5,9 +5,12 @@
     <!-- MainActivity -->
     <string name="action_settings">Settings</string>
 
-    <!-- Navigation -->
-    <string name="notes_list_fragment_label">Notes list Fragment</string>
-    <string name="note_fragment_label">Note Fragment</string>
+    <!-- Action bar labels -->
+    <string name="notes_list_fragment_label">Notes</string>
+    <string name="note_fragment_label">Note</string>
+    <string name="focus_fragment_label">Focus</string>
+    <string name="task_list_fragment_label">Tasks</string>
+    <string name="profile_fragment_label">Profile</string>
 
     <!--  NoteFragment  -->
     <string name="title">Title</string>
@@ -18,7 +21,7 @@
     <string name="description_save_new_note">Save new note</string>
     <string name="cd_add_new_note">Add new note</string>
     <string name="notes">Notes:</string>
-    
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
